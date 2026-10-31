@@ -54,13 +54,41 @@ def run(text, check=False):
     return out + sep + tail, p.stderr
 
 
+def run_json(src, check=False):
+    """JSON публичной редакции: типографим только строки с кириллицей, структура не трогается."""
+    import json
+    data = json.loads(src)
+    strs = []
+
+    # только поля, которые читатель видит как фразы; ключи, метки фильтров, даты и коды не трогаем
+    TEXT_KEYS = {"text", "title", "term", "name", "q", "a", "summary", "look", "obl", "live", "off", "cond"}
+
+    def walk(o, key=None):
+        if isinstance(o, dict):
+            return {k: walk(v, k) for k, v in o.items()}
+        if isinstance(o, list):
+            return [walk(v) if not isinstance(v, str) else v for v in o]
+        if isinstance(o, str) and key in TEXT_KEYS and re.search("[А-Яа-яЁё]", o):
+            strs.append(o)
+            return f"QZSTR{len(strs) - 1:04d}QZ"
+        return o
+
+    skeleton = walk(data)
+    if check:
+        return src, ""
+    parts = [run(s)[0] for s in strs]  # по строке за вызов: разделители в склейке Мильчин может тронуть
+    res = json.dumps(skeleton, ensure_ascii=False, indent=1)
+    res = re.sub(r"QZSTR(\d{4})QZ", lambda m: json.dumps(parts[int(m.group(1))], ensure_ascii=False)[1:-1], res)
+    json.loads(res)
+    return res + "\n", ""
+
+
 if __name__ == "__main__":
     check = "--check" in sys.argv
     for f in [a for a in sys.argv[1:] if not a.startswith("--")]:
         path = Path(f)
         src = path.read_text(encoding="utf-8")
-        out, log = run(src, check)
+        out, log = (run_json if f.endswith(".json") else run)(src, check)
         if not check and out != src:
             path.write_text(out, encoding="utf-8")
-        last = log.strip().splitlines()[-1] if log.strip() else "без правок"
-        print(f"{f}: {last}")
+        print(f"{f}: {'изменён' if out != src else 'без изменений'}")

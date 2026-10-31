@@ -1,6 +1,9 @@
 """Статические иллюстрации для docx/PDF публичной редакции (matplotlib). Интерактивные версии рисует JS в HTML."""
 import math
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).parent))
+from common import edition
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -129,7 +132,7 @@ def cover():
     ax.text(0.8, 6.9, "Научпоп · Как это работает", fontsize=20, color="#ffd9a0", va="center")
     ax.text(0.8, 5.2, "Третья форма тенге", fontsize=54, color="white", weight="bold", va="center")
     ax.text(0.8, 3.9, "как Казахстан учит деньги\nвыполнять условия", fontsize=30, color="white", va="center", linespacing=1.3)
-    ax.text(0.8, 1.2, "The Tenge · редакция 1.1 · данные на 31 октября 2026 года", fontsize=18, color="#cfe9df", va="center")
+    ax.text(0.8, 1.2, f"The Tenge · редакция {edition()['public_edition']} · данные на {edition()['date_text']}", fontsize=18, color="#cfe9df", va="center")
     fig.savefig(OUT / "cover.png", dpi=100); fig.savefig(OUT / "cover.svg"); plt.close(fig)
 
 

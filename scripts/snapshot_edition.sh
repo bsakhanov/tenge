@@ -12,5 +12,9 @@ snap() { # $1 папка, остальные — файлы
   ( cd "$dir" && sha256sum $(ls | grep -E '\.(docx|pdf|html|png|json)$') > SHA256SUMS )
   echo "Снимок в $dir"
 }
-[ -n "$pub" ] && ls dist/digital-tenge-popsci-* >/dev/null 2>&1 && snap "$pub" dist/digital-tenge-popsci-*
-if [ -n "$ana" ] && [ ! -d "editions/$ana" ]; then snap "$ana" dist/digital-tenge-report-*; fi
+if [ -n "$pub" ] && [ "$pub" = "$ana" ]; then   # общий выпуск обеих дорожек (с 1.1.1)
+  snap "$pub" dist/digital-tenge-popsci-"$pub"* dist/digital-tenge-report-"$ana".*
+  exit 0
+fi
+[ -n "$pub" ] && ls dist/digital-tenge-popsci-* >/dev/null 2>&1 && snap "$pub" dist/digital-tenge-popsci-"$pub"*
+if [ -n "$ana" ] && [ ! -d "editions/$ana" ]; then snap "$ana" dist/digital-tenge-report-"$ana".*; fi

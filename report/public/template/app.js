@@ -393,7 +393,7 @@ W.registry=function(root){
 /* ---------- versions ---------- */
 W.versions=function(root){
   shell(root,'История версий','Каждая редакция сохраняется. Выберите версию, чтобы увидеть, что в ней изменилось.');
-  var sel=h('select',{'aria-label':'Версия'},D.versions.map(function(v){return h('option',{value:v.v},v.v+' · '+v.date+' · '+(v.kind==='public'?'публичная':'аналитическая'));}));
+  var sel=h('select',{'aria-label':'Версия'},D.versions.map(function(v){return h('option',{value:v.v},v.v+' · '+v.date+' · '+({public:'публичная',corrective:'корректирующая'}[v.kind]||'аналитическая'));}));
   var out=h('div');
   function draw(){var v=D.versions.filter(function(x){return x.v===sel.value;})[0];out.innerHTML='';out.appendChild(h('div',{class:'out'},h('b',null,'Редакция '+v.v+'. '),v.title));out.appendChild(h('ul',null,v.changes.map(function(c){return h('li',null,c);})));}
   sel.addEventListener('change',draw);root.appendChild(h('div',{class:'row'},sel));root.appendChild(out);draw();

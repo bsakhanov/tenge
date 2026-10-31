@@ -1,4 +1,4 @@
-.PHONY: check lint build public html charts test-public manifest snapshot all
+.PHONY: check lint build public html charts test-public manifest snapshot all redkollegiya guard typo
 check:
 	python3 scripts/check.py
 lint:
@@ -18,3 +18,9 @@ manifest:
 snapshot:
 	bash scripts/snapshot_edition.sh
 all: check build charts public test-public snapshot
+redkollegiya:     # русская Редколлегия и редакторы (Чуковский, Аграновский, Слопотрон, Розенталь, Мильчин) в tools/
+	bash scripts/redkollegiya_setup.sh
+guard:            # страж языкового прохода против последнего коммита
+	python3 scripts/langpass_guard.py report/src/*.md report/public/chapters/*.md report/public/data/*.json
+typo:             # Мильчин с защитой разметки Pandoc, плейсхолдеров и номеров норм
+	python3 scripts/typograph.py report/src/*.md report/public/chapters/*.md report/public/data/countries.json report/public/data/faq.json report/public/data/forms.json report/public/data/glossary.json report/public/data/lifecycle.json report/public/data/risks.json report/public/data/timeline.json
