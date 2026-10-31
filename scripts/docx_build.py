@@ -51,7 +51,7 @@ def make_ref():
     setfont("Subtitle","Arial",15,False,"2F5496")
     st["Title"].paragraph_format.alignment=WD_ALIGN_PARAGRAPH.LEFT
     st["Subtitle"].paragraph_format.alignment=WD_ALIGN_PARAGRAPH.LEFT
-    st["Title"].paragraph_format.space_before=Pt(120); st["Title"].paragraph_format.space_after=Pt(12)
+    st["Title"].paragraph_format.space_before=Pt(int(os.environ.get("TITLE_SPACE_BEFORE","120"))); st["Title"].paragraph_format.space_after=Pt(12)
     for s in ("Footnote Text","Table Caption","Image Caption"):
         if s in [x.name for x in st]: setfont(s,"Times New Roman",10)
     sec=d.sections[0]
@@ -181,7 +181,7 @@ def headings(d):
 
 def insert_toc(d,entries,pages):
     # find Heading 1 "Резюме для руководства"
-    target=[p for p in d.paragraphs if p.style.name=="Heading 1" and p.text.strip().startswith("Резюме")][0]
+    target=[p for p in d.paragraphs if p.style.name=="Heading 1"][0]
     def new_par_before(text,style=None):
         np_=OxmlElement('w:p')
         target._p.addprevious(np_)
@@ -206,8 +206,9 @@ def insert_toc(d,entries,pages):
 
 def props(d):
     cp=d.core_properties
-    cp.author="Саханов Бейбит"; cp.last_modified_by="Саханов Бейбит"
-    cp.title="Цифровой тенге в Казахстане: доклад-исследование"; cp.subject="Цифровая валюта центрального банка, РК"; cp.language="ru-RU"
+    a=os.environ.get("DOC_AUTHOR","Саханов Бейбит")
+    cp.author=a; cp.last_modified_by=a
+    cp.title=os.environ.get("DOC_TITLE","Цифровой тенге в Казахстане: доклад-исследование"); cp.subject=os.environ.get("DOC_SUBJECT","Цифровая валюта центрального банка, РК"); cp.language="ru-RU"
 
 def finish(inp,out,pages=None):
     d=Document(inp)

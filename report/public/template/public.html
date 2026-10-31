@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>%%TITLE%%</title>
+<meta name="description" content="%%DESC%%">
+<meta name="author" content="%%AUTHOR%%">
+<meta name="generator" content="digital-tenge report builder %%VERSION%%">
+<meta property="og:type" content="article"><meta property="og:title" content="%%TITLE%%"><meta property="og:description" content="%%DESC%%">
+<meta property="article:author" content="%%AUTHOR%%"><meta property="article:published_time" content="%%ISO%%">
+<script type="application/ld+json">%%JSONLD%%</script>
+<style>%%CSS%%</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="bar">
+  <span class="brand">The Tenge</span>
+  <span class="title">%%SHORT%%</span>
+  <button id="vb" class="vbadge" type="button" title="История версий">ред. %%VERSION%%</button>
+  <button id="fsm" type="button" aria-label="Уменьшить шрифт">A−</button>
+  <button id="fsp" type="button" aria-label="Увеличить шрифт">A+</button>
+  <button id="theme" type="button" aria-label="Сменить тему">Тема</button>
+</header>
+<div class="hero"><img src="data:image/jpeg;base64,%%COVER%%" alt="Обложка: третья форма тенге" width="1600" height="900"></div>
+<div class="layout">
+<nav class="toc" aria-label="Содержание"></nav>
+<main>
+<h1 style="margin-top:1.2em">%%TITLE%%</h1>
+<div class="meta">
+  <span><b>Формат:</b> Как это работает</span><span><b>Тема:</b> Финансы</span><span><b>Метка:</b> Научпоп</span>
+  <span><b>Автор:</b> %%AUTHOR%%</span><span><b>Дата:</b> %%DATE%%</span><span><b>Версия:</b> %%VERSION%%</span><span><b>Чтение:</b> около %%READ%% мин.</span>
+</div>
+<p class="endnote"><em>Материал подготовлен редакцией с использованием инструментов искусственного интеллекта; каждая цифра сверена с источником, сомнительные исключены. Исправления: см. «История версий» в конце.</em></p>
+%%BODY%%
+<section id="glossary" class="level1"><h1>Словарь терминов</h1><div class="widget" data-widget="glossary"></div></section>
+<section id="versions" class="level1"><h1>История версий</h1><div class="widget" data-widget="versions"></div></section>
+<section id="sources" class="level1"><h1>Список использованных источников</h1>
+<details class="q"><summary>Показать список (%%NSRC%% источников)</summary><ol class="srcs">%%SRC%%</ol></details></section>
+</main>
+</div>
+<footer>%%AUTHOR%% · the-tenge.kz · редакция %%VERSION%% · данные на %%DATE%% · материал подготовлен с использованием ИИ, факты проверены по первоисточникам</footer>
+<script>window.__DATA__=%%DATA%%;</script>
+<script>%%JS%%</script>
+</body>
+</html>

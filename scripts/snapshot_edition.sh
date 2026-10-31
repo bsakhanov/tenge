@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
-# Фиксирует выпуск: копирует dist/ и снимок реестров в editions/<редакция>/, считает SHA256SUMS.
+# Фиксирует выпуск: копирует собранные файлы и снимок реестров в editions/<номер>/ и считает SHA256SUMS.
+# Публичная редакция -> editions/<public_edition>/ ; аналитическая -> editions/<analytic_edition>/ (если ещё нет).
 set -e
 cd "$(dirname "$0")/.."
-ed=$(awk -F': ' '/^edition:/{gsub(/"/,"",$2); print $2}' edition.yml)
-dir="editions/$ed"; mkdir -p "$dir/registry_snapshot"
-cp dist/*.docx dist/*.pdf "$dir"/
-cp registry/*.csv "$dir/registry_snapshot/"
-cp watch/indicators.csv "$dir/registry_snapshot/"
-cp edition.yml "$dir/"
-( cd "$dir" && sha256sum *.docx *.pdf > SHA256SUMS )
-echo "Снимок в $dir"
+get() { awk -F': ' -v k="$1" '$1==k {sub(/[ \t]+#.*$/,"",$2); gsub(/"/,"",$2); print $2}' edition.yml; }
+pub=$(get public_edition); ana=$(get analytic_edition)
+snap() { # $1 папка, остальные — файлы
+  dir="editions/$1"; shift; mkdir -p "$dir/registry_snapshot"
+  for f in "$@"; do [ -e "$f" ] && cp "$f" "$dir"/; done
+  cp registry/*.csv watch/indicators.csv "$dir/registry_snapshot/"; cp edition.yml "$dir/"
+  ( cd "$dir" && sha256sum $(ls | grep -E '\.(docx|pdf|html|png|json)$') > SHA256SUMS )
+  echo "Снимок в $dir"
+}
+[ -n "$pub" ] && ls dist/digital-tenge-popsci-* >/dev/null 2>&1 && snap "$pub" dist/digital-tenge-popsci-*
+if [ -n "$ana" ] && [ ! -d "editions/$ana" ]; then snap "$ana" dist/digital-tenge-report-*; fi

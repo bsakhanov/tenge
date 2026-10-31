@@ -1,0 +1,8 @@
+# Паспорт текущего выпуска. Меняется при каждом выпуске (см. methodology/update-protocol.md).
+edition: "1.1"                 # общий номер выпуска
+public_edition: "1.1"          # публичная (научно-популярная) редакция для the-tenge.kz
+analytic_edition: "1.0.1"      # последняя аналитическая редакция (шесть томов)
+date_text: "31 октября 2026 года"
+cutoff_date: "2026-10-31"
+kind: public
+author_public: "Редакция The Tenge"

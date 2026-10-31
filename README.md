@@ -2,14 +2,15 @@
 
 Рабочий репозиторий регулярного исследования проекта «цифровой тенге» (РК): доклад, реестры фактов, методология, список наблюдения и сборка. Цель: каждые полгода обновлять доклад и выпускать новые, более актуальные редакции, не теряя связи с предыдущими.
 
-**Текущая редакция:** 1.0, срез данных 31 октября 2026 года. Файлы: `editions/1.0/` (`digital-tenge-report-1.0.docx` и `.pdf`) и страница релиза `v1.0`.
+**Текущий выпуск:** публичная (научно-популярная) редакция **1.1** для the-tenge.kz и аналитическая редакция **1.0.1**; срез данных 31 октября 2026 года. Файлы: `editions/1.1/` (HTML, docx, PDF, метаданные) и `editions/1.0.1/`; на странице релиза `v1.1` — всё вместе.
 
 ## Что внутри
 
 ```
 edition.yml               паспорт редакции (номер, дата, срез, вид выпуска)
 CHANGELOG.md              что менялось от редакции к редакции
-report/src/               исходники доклада в Markdown: front, vol1–vol6, appendix
+report/src/               аналитический доклад в Markdown: front, vol1–vol6, appendix
+report/public/            публичная редакция: chapters/, data/*.json, figures/, template/ (HTML, CSS, JS), sources.md
 registry/                 реестры как данные: facts.csv, discrepancies.csv, gaps.csv
 watch/                    список наблюдения, поисковые запросы, временной ряд показателей
 sources/                  манифест источников (файлы в git не кладутся)
@@ -21,13 +22,16 @@ editions/<X.Y>/           выпущенные docx и PDF, снимок рее�
 
 ## Быстрый старт
 
-Требуется: Python 3.10+, pandoc, LibreOffice (`soffice`), poppler (`pdfinfo`, `pdftotext`), шрифты Times New Roman и Arial (либо метрически совместимые Liberation).
+Требуется: Python 3.10+, pandoc, LibreOffice (`soffice`), poppler (`pdfinfo`, `pdftotext`), шрифты Times New Roman и Arial (либо метрически совместимые Liberation); для публичной редакции дополнительно matplotlib и Pillow, для автотеста — Playwright.
 
 ```bash
 pip install -r requirements.txt
-make check     # целостность кодов Ф-/Р-/М-/R-, ссылки, счётчики
+make check     # целостность кодов Ф-/Р-/М-/R-, ссылки, счётчики (аналитическая дорожка)
 make lint      # типографика и язык (предупреждения)
-make build     # docx + PDF в dist/ с оглавлением и проверкой вёрстки
+make build     # аналитическая редакция: docx + PDF в dist/
+make charts    # иллюстрации публичной редакции (matplotlib)
+make public    # публичная редакция: HTML, docx, PDF, метаданные для Joomla
+make test-public   # автотест интерактивности (pip install -r requirements-dev.txt; playwright install chromium)
 make snapshot  # зафиксировать выпуск в editions/<X.Y>/
 ```
 
@@ -47,4 +51,4 @@ make snapshot  # зафиксировать выпуск в editions/<X.Y>/
 4. Внешние материалы (черновики, статьи, записки партнёров) проверяются по первоисточнику; вердикт фиксируется.
 5. Данные оператора принимаются как его заявления, а не как независимый аудит.
 
-Автор: Саханов Бейбит.
+Авторство: аналитическая редакция — Саханов Бейбит; публичная редакция — «Редакция The Tenge».

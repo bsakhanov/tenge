@@ -8,7 +8,8 @@ def run(verbose=True):
     text, subs = assemble()
     body = text[: text.index("# Приложение А")]
     errors, warns = [], []
-    facts = read_csv("facts.csv")
+    from common import facts_for_analytic
+    facts = facts_for_analytic()
     ids = [int(r["id"].split("-")[1]) for r in facts]
     if ids != list(range(1, len(ids) + 1)):
         errors.append("Нумерация Ф- не непрерывна или есть дубли")
