@@ -51,9 +51,9 @@ def main():
     bad = [h for (l, h), p in zip(ents, pg) if p not in [q for q in range(3, n + 1) if re.sub(r"[\s\-]+", "", h)[:34] in txt[q]]]
     if bad:
         sys.exit(f"Оглавление не совпало с вёрсткой: {bad}")
-    ed = edition()["edition"].replace(".", "_")
-    shutil.copy(BUILD / "final.docx", DIST / f"Цифровой_тенге_доклад_ред_{ed}.docx")
-    shutil.copy(BUILD / "final.pdf", DIST / f"Цифровой_тенге_доклад_ред_{ed}.pdf")
+    ed = edition()["edition"]
+    shutil.copy(BUILD / "final.docx", DIST / f"digital-tenge-report-{ed}.docx")
+    shutil.copy(BUILD / "final.pdf", DIST / f"digital-tenge-report-{ed}.pdf")
     print(f"Готово: {n} стр.; файлы в dist/ (редакция {edition()['edition']})")
 
 
