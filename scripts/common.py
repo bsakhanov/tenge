@@ -57,11 +57,11 @@ def assemble():
         return "| " + " | ".join(x.replace("|", "/") for x in (r["id"], content, r["source"], r["year"])) + " |"
     text = text.replace("<!-- TABLE:facts -->", "| Код | Содержание | Источник | Год данных |\n|---|---|---|---|\n" + "\n".join(fact_row(r) for r in facts))
     text = text.replace("<!-- TABLE:discrepancies -->", md_table(disc, ["id", "description", "status"], ["Код", "Расхождение", "Статус"]))
-    text = text.replace("<!-- TABLE:gaps -->", md_table(gaps, ["id", "question"], ["Код", "Вопрос, на который материалы ответа не дают"]))
+    text = text.replace("<!-- TABLE:gaps -->", md_table(gaps, ["id", "question", "status"], ["Код", "Вопрос, на который материалы ответа не дают", "Статус"]))
     n_ai, c = ai_counts(text)
     subs = {
         "EDITION": ed["edition"], "DATE": ed["date_text"],
-        "N_FACTS": str(len(facts)), "N_DISC": str(len(disc)), "N_GAPS": str(len(gaps)),
+        "N_FACTS": str(len(facts)), "N_DISC": str(len(disc)), "N_GAPS": str(sum(1 for g in gaps if not g["status"].startswith("закрыто"))),
         "N_AI": str(n_ai), "AI_OK": str(c["Подтверждено"]), "AI_PART": str(c["Подтверждено частично"]),
         "AI_NO": str(c["Не подтверждено"]), "AI_REF": str(c["Опровергнуто первоисточником"]),
     }
